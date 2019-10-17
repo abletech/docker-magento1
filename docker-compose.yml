@@ -1,0 +1,32 @@
+version: '3.0'
+services:
+  web:
+    image: alexcheng/magento:latest
+    volumes:
+    - web-data:/var/www/html
+    - /Users/katenorquay/addressfinder/addressfinder-magento-1/app/code/community/AddressFinder:/var/www/html/app/code/community/AddressFinder:ro
+    - /Users/katenorquay/addressfinder/addressfinder-magento-1/app/design/frontend/base/default/layout/addressfinder.xml:/var/www/html/app/design/frontend/base/default/layout/addressfinder.xml:ro
+    - /Users/katenorquay/addressfinder/addressfinder-magento-1/app/design/frontend/base/default/template/addressfinder:/var/www/html/app/design/frontend/base/default/template/addressfinder:ro
+    - /Users/katenorquay/addressfinder/addressfinder-magento-1/app/etc/modules/AddressFinder_AddressFinder.xml:/var/www/html/app/etc/modules/AddressFinder_AddressFinder.xml:ro
+    - /Users/katenorquay/addressfinder/addressfinder-magento-1/js/addressfinder:/var/www/html/js/addressfinder:ro
+    ports:
+      - "80:80"
+    links:
+      - db
+    env_file:
+      - env
+  db:
+    image: mysql:5.6.23
+    volumes:
+      - db-data:/var/lib/mysql/data
+    env_file:
+      - env
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8580:80"
+    links:
+      - db
+volumes:
+  db-data:
+  web-data:
